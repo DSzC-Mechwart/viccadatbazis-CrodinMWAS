@@ -6,7 +6,7 @@ using ViccAdatbazis.Models;
 
 namespace ViccAdatbazis.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/vicc/")]
     [ApiController]
     public class ViccController : ControllerBase
     {
@@ -80,7 +80,27 @@ namespace ViccAdatbazis.Controllers
         }
 
         //Lájkolás
-
+        [HttpPatch("{id}/like")]
+        public async Task<ActionResult> AddLike(int id)
+        {
+            var likedJoke = _context.Viccek.Find(id);
+            if (likedJoke == null)
+                return NotFound();
+            likedJoke.Tetszik++;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
         //Dislájkolás
+
+        [HttpPatch("{id}/dislike")]
+        public async Task<ActionResult> AddDislike(int id)
+        {
+            var likedJoke = _context.Viccek.Find(id);
+            if (likedJoke == null)
+                return NotFound();
+            likedJoke.NemTetszik++;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
